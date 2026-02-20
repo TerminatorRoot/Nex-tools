@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aura · portofolio mini</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f9faff 0%, #f0f3fd 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .card {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 3rem 2rem 3rem 2rem;
+            box-shadow: 0 25px 50px -8px rgba(0, 10, 30, 0.15),
+                        0 0 0 1px rgba(156, 180, 255, 0.3) inset;
+            padding: 2.2rem 2.5rem;
+            transition: all 0.2s ease;
+        }
+
+        /* header / navbar mini */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(130deg, #1d267d, #5c469c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            border-right: 3px solid #9bb0ff;
+            padding-right: 1.2rem;
+        }
+
+        .menu {
+            display: flex;
+            gap: 0.2rem;
+            flex-wrap: wrap;
+        }
+
+        .menu-btn {
+            background: transparent;
+            border: none;
+            padding: 0.6rem 1.4rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 40px;
+            color: #1e1f2a;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .menu-btn:hover {
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 8px 18px -8px rgba(65, 105, 225, 0.4);
+            color: #1d267d;
+        }
+
+        .menu-btn.active {
+            background: white;
+            box-shadow: 0 8px 18px -6px #a0b5f0, 0 0 0 1px #c2d0ff;
+            color: #1d267d;
+            font-weight: 600;
+        }
+
+        /* konten dinamis */
+        .content-panel {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 2.5rem 1.8rem 2.5rem 1.8rem;
+            padding: 2.5rem 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 12px 24px -16px #1e2b5e20;
+            transition: 0.3s;
+        }
+
+        .greeting {
+            font-size: 2.5rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(125deg, #121639, #332e5e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .greeting span {
+            font-size: 2rem;
+            opacity: 0.8;
+        }
+
+        .desc {
+            font-size: 1.2rem;
+            color: #1d2540;
+            max-width: 80%;
+            margin-bottom: 2rem;
+            border-left: 4px solid #5f7bff;
+            padding-left: 1.5rem;
+        }
+
+        .highlight-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            background: white;
+            border-radius: 1.8rem 0.8rem 1.8rem 0.8rem;
+            padding: 1rem 2rem 1rem 1.8rem;
+            box-shadow: 0 6px 12px #cbd5ff60;
+            border: 1px solid #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            background: #edf2ff;
+            width: 48px;
+            height: 48px;
+            border-radius: 40%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-num {
+            font-weight: 700;
+            font-size: 1.8rem;
+            line-height: 1.2;
+            color: #162b62;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #2f3c7e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* project grid (akan diisi lewat js) */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 2rem 0.8rem 2rem 0.8rem;
+            padding: 1.8rem 1rem 1.4rem 1.5rem;
+            box-shadow: 0 12px 22px -16px #1f2c56;
+            border: 1px solid #f3f7ff;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 30px -18px #2844a0;
+            border-color: #b7cbff;
+        }
+
+        .emoji-badge {
+            font-size: 2.2rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .project-title {
+            font-weight: 600;
+            font-size: 1.4rem;
+            color: #141b3b;
+        }
+
+        .project-desc {
+            color: #2a3155;
+            font-size: 0.95rem;
+            margin: 0.5rem 0 0.8rem;
+        }
+
+        .tech-tag {
+            background: #e5ecfe;
+            border-radius: 60px;
+            padding: 0.3rem 0.9rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1a2b70;
+            display: inline-block;
+        }
+
+        /* bagian kontak / footer */
+        .contact-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background: #ffffffd6;
+            padding: 1.2rem 2rem;
+            border-radius: 60px 20px 60px 20px;
+            box-shadow: 0 4px 10px #e0e8ff;
+        }
+
+        .sosmed i {
+            font-size: 1.7rem; 
+            margin-right: 0.7rem;
+            cursor: pointer;
+            color: #28356a;
+            transition: 0.15s;
+        }
+
+        .sosmed i:hover { 
+            color: #5065c7; 
+            transform: scale(1.1); 
+        }
+
+        .copy {
+            color: #2e3a70;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #email-counter {
+            background: #dfe8ff;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* mode compact di mobile */
+        @media (max-width: 650px) {
+            .card { padding: 1.5rem; }
+            .greeting { font-size: 1.8rem; }
+            .desc { max-width: 100%; }
+            .stat-num { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <!-- navigasi tab -->
+        <div class="nav">
+            <div class="logo">✦ aura.design</div>
+            <div class="menu" id="tabMenu">
+                <button class="menu-btn active" data-tab="home">🏠 beranda</button>
+                <button class="menu-btn" data-tab="projects">✨ proyek</button>
+                <button class="menu-btn" data-tab="contact">📫 kontak</button>
+            </div>
+        </div>
+
+        <!-- area konten dinamis (diisi javascript) -->
+        <div class="content-panel" id="dynamicContent">
+            <!-- initial HOME akan di-render melalui JS -->
+        </div>
+
+        <!-- footer / interaksi bebas -->
+        <div class="contact-row">
+            <div class="sosmed">
+                <span style="font-size:1.7rem; margin-right:12px;">🖌️</span>
+                <i>📘</i>
+                <i>📷</i>
+                <i>🐦</i>
+            </div>
+            <div class="copy" id="clickableEmail">
+                <span>📧 hello@aura.design</span>
+                <span id="email-counter">0 klik</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ----- DATA STATIS UNTUK PROJECT -----
+            const projectsData = [
+                { emoji: '🎨', title: 'Palet visual', desc: 'Aplikasi gradient & palet warna', tech: 'CSS/JS' },
+                { emoji: '📦', title: 'inventaris', desc: 'Manajemen stok ringan', tech: 'React + local' },
+                { emoji: '🌦️', title: 'Cuaca kota', desc: 'Widget prakiraan 5 hari', tech: 'API fetch' },
+                { emoji: '🧮', title: 'kalkulator', desc: 'Kalkulator saintifik mini', tech: 'HTML/CSS/JS' }
+            ];
+
+            // elemen2 penting
+            const contentDiv = document.getElementById('dynamicContent');
+            const tabButtons = document.querySelectorAll('.menu-btn');
+            const emailSpan = document.querySelector('#clickableEmail');
+            const counterSpan = document.getElementById('email-counter');
+
+            // state counter email
+            let emailClickCount = 0;
+            counterSpan.innerText = emailClickCount + ' klik';
+
+            // ---- RENDER FUNCTION BERDASARKAN TAB ----
+            function renderContent(tabId) {
+                let htmlString = '';
+
+                if (tabId === 'home') {
+                    htmlString = `
+                        <div class="greeting">
+                            halo, saya aura! <span>✧</span>
+                        </div>
+                        <div class="desc">
+                            Desain & kode dengan rasa. Menciptakan antarmuka yang terasa ringan dan manusiawi.
+                        </div>
+                        <div class="highlight-box">
+                            <div class="stat-item">
+                                <div class="stat-icon">🕒</div>
+                                <div>
+                                    <div class="stat-num">3+</div>
+                                    <div class="stat-label">tahun eksplorasi</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">🚀</div>
+                                <div>
+                                    <div class="stat-num" id="projectCountDisplay">4</div>
+                                    <div class="stat-label">proyek publik</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">☕</div>
+                                <div>
+                                    <div class="stat-num">∞</div>
+                                    <div class="stat-label">cangkir kopi</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } 
+                else if (tabId === 'projects') {
+                    // buat grid project dari data
+                    let projectCards = '';
+                    projectsData.forEach(p => {
+                        projectCards += `
+                            <div class="project-card" onclick="alert('📋 buka detail ${p.title} (simulasi)')">
+                                <div class="emoji-badge">${p.emoji}</div>
+                                <div class="project-title">${p.title}</div>
+                                <div class="project-desc">${p.desc}</div>
+                                <span class="tech-tag">${p.tech}</span>
+                            </div>
+                        `;
+                    });
+                    htmlString = `
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                            <h2 style="color:#121b3f;">⸻ karya terbaru</h2>
+                            <span style="background:#dce3ff; padding:0.4rem 1rem; border-radius:40px;">total ${projectsData.length} item</span>
+                        </div>
+                        <div class="project-grid">
+                            ${projectCards}
+                        </div>
+                        <p style="margin-top:2rem; color:#33416e; font-style:italic;">klik card untuk melihat aksi ✨</p>
+                    `;
+                } 
+                else if (tabId === 'contact') {
+                    htmlString = `
+                        <div style="display: flex; align-items: center; gap: 1.8rem; flex-wrap: wrap;">
+                            <div style="background:#dae2ff; border-radius: 50%; width:90px; height:90px; display: flex; align-items: center; justify-content: center; font-size:3.2rem; box-shadow: 0 8px 10px #bbc8ff;">
+                                📬
+                            </div>
+                            <div>
+                                <h2 style="font-size:2rem; color:#131d48;">mari ngobrol</h2>
+                                <p style="max-width:400px;">respon biasanya dalam 1-2 jam, atau cukup klik email di footer untuk hitung interaksi :)</p>
+                                <div style="margin-top:1.4rem; display: flex; gap:1.2rem;">
+                                    <div>📞 +62 812 3456 7890</div>
+                                    <div>📍 studio imajiner</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                contentDiv.innerHTML = htmlString;
+
+                // sedikit tambahan: perbarui project count di home jika diperlukan (opsional)
+                if (tabId === 'home') {
+                    const projSpan = document.getElementById('projectCountDisplay');
+                    if (projSpan) projSpan.innerText = projectsData.length;
+                }
+            }
+
+            // ---- SET ACTIVE TAB & RENDER ----
+            function switchTab(tabId) {
+                // update class active di tombol
+                tabButtons.forEach(btn => {
+                    const btnTab = btn.getAttribute('data-tab');
+                    if (btnTab === tabId) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                // render konten
+                renderContent(tabId);
+            }
+
+            // ---- EVENT LISTENER UNTUK TAB ----
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tabId = btn.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+
+            // ---- EVENT KLIK EMAIL DI FOOTER (interaksi JS bebas) ----
+            emailSpan.addEventListener('click', () => {
+                emailClickCount++;
+                counterSpan.innerText = emailClickCount + ' klik';
+                // efek kecil: ubah sementara warna latar
+                emailSpan.style.transition = '0.2s';
+                emailSpan.style.backgroundColor = '#f2e9ff';
+                setTimeout(() => {
+                    emailSpan.style.backgroundColor = 'transparent';
+                }, 150);
+
+                // bonus: tambahin notifikasi kecil kalo mencapai kelipatan 5
+                if (emailClickCount % 5 === 0) {
+                    alert('🎉 sudah ' + emailClickCount + ' klik! semangat berkarya.');
+                }
+            });
+
+            // ---- INISIALISASI: TAMPILKAN TAB HOME SAAT PERTAMA ----
+            switchTab('home');
+
+            // tambahan interaktivitas: ganti latar content panel double-click
+            contentDiv.addEventListener('dblclick', function() {
+                this.style.background = '#fafff0';
+                this.style.transition = '0.5s';
+                setTimeout(() => {
+                    this.style.background = '';  // balik ke default css
+                }, 400);
+            });
+
+            // satu lagi: proyek count bisa diklik untuk lompat ke tab proyek (fitur ekstra)
+            // kita pasang event delegation (karena konten berubah)
+            document.body.addEventListener('click', function(e) {
+                if (e.target.closest('#projectCountDisplay')) {
+                    // pindah ke tab projects
+                    switchTab('projects');
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>
